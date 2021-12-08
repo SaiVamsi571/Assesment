@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    data.role = 'Auditor'? this.router.navigate(['audit']): this.router.navigate([this.returnUrl]);
                 },
                 error => {
                     this.alertService.error(error);

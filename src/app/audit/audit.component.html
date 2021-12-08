@@ -1,13 +1,51 @@
 <h1>Hi {{currentUser.firstName}}!</h1>
 <p>You're logged in with Angular 8!!</p>
 <h3>All login audit :</h3>
-<ul>
-    <li *ngFor="let audit of audits">
-        <br/><span class="badge badge-primary">{{audit.user}}</span>
-        <br/><span class="badge badge-secondary">{{audit._id}}</span>
-        <br/>Login - {{audit.loginTime}}
-        <br/>Logout - {{audit.logoutTime}}
-        <br/>IP - {{audit.ip}}
-    </li>
+Choose Format: <select (change)="formatChange($event.target.value)" class="mb-2">
+    <option value="12">12 hr format</option>
+    <option value="24">24 hr format</option>
+</select>
+<br/>
+<!-- <select (change)="noOfRecords($event.target.value)" class="mb-2"> -->
+    <select  class="mb-2">
+    <option value="10">10</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+    <option value="1000">1000</option>
+    <option value="All" selected>All</option>
+    
+</select>
 
-</ul>
+<br/>
+<!-- <button *ngFor="let button of noOfRecordsperPage; let i=index" class="mb-2" (click)="setRecords(i+1)">{{i+1}}</button> -->
+
+<input type="text" [(ngModel)]="searchTerm" name="searchTerm" placeholder="Search for Username, Userid, ip" class="mb-2 col-9">
+
+<table class="table table-striped table-bordered" id="table">
+    <thead class="thead-light">
+        <tr>
+        <!-- <th [appSort]="audits" data-order="desc" data-name="user">User Name</th>
+        <th [appSort]="audits" data-order="desc" data-name="_id">User Id</th>
+        <th [appSort]="audits" data-order="desc" data-name="loginTime">Login Time</th>
+        <th [appSort]="audits" data-order="desc" data-name="logoutTime">Logout Time</th>
+        <th [appSort]="audits" data-order="desc" data-name="ip">Audit IP</th> -->
+
+        <th [appSort]="audits" data-order="desc" data-name="user">User Name ↑↓</th>
+        <th [appSort]="audits" data-order="desc" data-name="_id">User Id ↑↓</th>
+        <th [appSort]="audits" data-order="desc" data-name="loginTime">Login Time ↑↓</th>
+        <th [appSort]="audits" data-order="desc" data-name="logoutTime">Logout Time ↑↓</th>
+        <th [appSort]="audits" data-order="desc" data-name="ip">Audit IP ↑↓</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let audit of audits| searchFilter: searchTerm">
+            <td>{{audit.user}}</td>
+            <td>{{audit._id}}</td>
+            <td>{{audit.loginTime | date:format}}</td>
+            <td>{{audit.logoutTime | date:format}}</td>
+            <td>{{audit.ip}}</td>
+        </tr>
+    </tbody>
+</table>
+
+
